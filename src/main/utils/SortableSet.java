@@ -15,7 +15,12 @@ public class SortableSet<E> implements Iterable<E> {
     // EFFECTS: adds an item and returns true if it is not already present;
     //          returns false otherwise
     public boolean add(E item) {
-        return !this.items.contains(item) && this.items.add(item);
+        if (!this.items.contains(item)) {
+            this.items.add(item);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // MODIFIES: this
