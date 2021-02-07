@@ -14,10 +14,11 @@ The application is made using Java and therefore runs on all platforms that supp
 
 ## User Stories
 
-- [ ] As a user, I would like to create notes and folders.
-- [ ] As a user, I would like to view all folders.
-- [ ] As a user, I would like to view all notes inside a folder.
+- [x] As a user, I would like to create notes and folders.
+- [x] As a user, I would like to view all folders.
+- [x] As a user, I would like to view all notes inside a folder.
 - [ ] As a user, I would like to search for text in my notes.
-- [ ] As a user, I would like to lock my notes with a password.
-- [ ] As a user, I would like to remove notes.
-- [ ] As a user, I would like to edit notes.
+- [x] As a user, I would like to lock my notes with a password.
+- [x] As a user, I would like to remove notes.
+- [x] As a user, I would like to edit notes.
+- [ ] As a user, I would like to sort notes in a folder.
