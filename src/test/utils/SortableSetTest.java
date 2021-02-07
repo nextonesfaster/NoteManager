@@ -88,6 +88,12 @@ public class SortableSetTest {
         assertNotEquals(newSet, this.set);
         assertNotEquals(newSet, null);
         assertEquals(newSet, newSet);
+
+        class Test extends SortableSet<Integer> {}
+        Test test = new Test();
+        test.add(1);
+        test.add(2);
+        assertNotEquals(test, this.set);
     }
 
     @Test
