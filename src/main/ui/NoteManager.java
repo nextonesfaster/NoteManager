@@ -92,7 +92,6 @@ public class NoteManager {
         }
     }
 
-
     // Creates a new folder interactively
     // MODIFIES: this
     // EFFECTS: interactively creates a new folder;
@@ -141,6 +140,9 @@ public class NoteManager {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: deletes folder after prompting user if its not the default folder;
+    //          informs users that default folders can't be deleted otherwise
     private void handleFolderDelete(Folder folder) {
         if (folder.equals(this.defaultFolder)) {
             System.out.println("Cannot delete the default folder.");
@@ -458,6 +460,8 @@ public class NoteManager {
         }
     }
 
+    // EFFECTS: interactively prompts the user, asking if they'd like to delete the folder;
+    //          returns true if user wants to delete; false otherwise
     private boolean deleteFolderConfirmation() {
         System.out.println(
                 "Are you sure you want to delete the folder?"
