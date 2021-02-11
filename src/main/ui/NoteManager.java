@@ -123,23 +123,31 @@ public class NoteManager {
         }
 
         System.out.println("\n" + this.folders.display());
+        System.out.println("Enter the number of the folder you'd like to delete.");
         while (true) {
-            System.out.println("Enter the number of the folder you'd like to delete.");
             String input = this.getNextInput();
 
             int choice = this.tryGetPositiveInt(input);
+            if (choice == 0) {
+                return true;
+            }
             Optional<Folder> optionalFolder = this.folders.getFolders().safeGetIndexOne(choice);
             if (optionalFolder.isPresent()) {
-                if (optionalFolder.get().equals(this.defaultFolder)) {
-                    System.out.println("Cannot delete the default folder.");
-                } else {
-                    this.folders.remove(optionalFolder.get());
-                }
+                handleFolderDelete(optionalFolder.get());
                 return true;
             } else {
                 System.out.println("Invalid number. Try again...");
             }
+        }
+    }
 
+    private void handleFolderDelete(Folder folder) {
+        if (folder.equals(this.defaultFolder)) {
+            System.out.println("Cannot delete the default folder.");
+        } else {
+            if (this.deleteFolderConfirmation()) {
+                this.folders.remove(folder);
+            }
         }
     }
 
@@ -447,6 +455,25 @@ public class NoteManager {
             return new String(this.console.readPassword());
         } else {
             return this.getNextInput();
+        }
+    }
+
+    private boolean deleteFolderConfirmation() {
+        System.out.println(
+                "Are you sure you want to delete the folder?"
+                + " All notes inside the folder will be deleted as well. [y/n]"
+        );
+        while (true) {
+            String input = this.getNextInput();
+            if (input.equalsIgnoreCase("y")) {
+                System.out.println("Deleting...");
+                return true;
+            } else if (input.equalsIgnoreCase("n")) {
+                System.out.println("Not deleting.");
+                return false;
+            } else {
+                System.out.println("Invalid response, try again...");
+            }
         }
     }
 
