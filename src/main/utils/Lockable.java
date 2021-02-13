@@ -67,6 +67,18 @@ public class Lockable {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes lock from the object
+    public void removeLock() {
+        this.locked = false;
+        this.passwordHash = null;
+    }
+
+    // EFFECTS: returns true if the object has a lock; false otherwise
+    public boolean hasLock() {
+        return this.passwordHash != null;
+    }
+
     /**
      * GETTERS AND SETTERS
      */

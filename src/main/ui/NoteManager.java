@@ -366,6 +366,9 @@ public class NoteManager {
                 case "p":
                     this.handleNotePasswordEdit(note);
                     break;
+                case "r":
+                    this.handleNoteRemoveLock(note);
+                    break;
                 case "b":
                     note.lockIfPasswordSet();
                     return this.showNotes(note.getFolder());
@@ -381,6 +384,7 @@ public class NoteManager {
                 + "\n- [t] edit title"
                 + "\n- [e] edit text"
                 + "\n- [p] edit password/lock note"
+                + "\n- [r] remove lock from the note"
                 + "\n- [b] return back to folder view";
 
         System.out.println(msg);
@@ -479,6 +483,23 @@ public class NoteManager {
                 System.out.println("Invalid response, try again...");
             }
         }
+    }
+
+    // EFFECTS: interactively prompts the user to confirm if they'd like to remove lock from the note
+    private void handleNoteRemoveLock(Note note) {
+        if (!note.hasLock()) {
+            System.out.println("The note does not have a lock!");
+            return;
+        } else if (note.isLocked()) {
+            System.out.print("Please enter the current password: ");
+            if (!this.tryUnlockLockable(note, 2)) {
+                return;
+            }
+        }
+
+        note.removeLock();
+        System.out.println("Removed lock from the note!");
+        this.afterNoteEdit(note);
     }
 
     /**

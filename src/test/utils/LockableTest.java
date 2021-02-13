@@ -3,8 +3,7 @@ package utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LockableTest {
     private Lockable lockable;
@@ -63,5 +62,22 @@ public class LockableTest {
     public void testSetSecurePassword() {
         this.lockable.setSecurePassword("password");
         assertTrue(this.lockable.isCorrectPassword("password"));
+    }
+
+    @Test
+    public void testRemoveLock() {
+        this.lockable.lock("password");
+        assertTrue(this.lockable.isLocked());
+        assertNotNull(this.lockable.getPasswordHash());
+        this.lockable.removeLock();
+        assertFalse(this.lockable.isLocked());
+        assertNull(this.lockable.getPasswordHash());
+    }
+
+    @Test
+    public void testHasLock() {
+        assertFalse(this.lockable.hasLock());
+        this.lockable.lock("password");
+        assertTrue(this.lockable.hasLock());
     }
 }
