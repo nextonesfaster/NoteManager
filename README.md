@@ -22,3 +22,7 @@ The application is made using Java and therefore runs on all platforms that supp
 - [x] As a user, I would like to remove notes.
 - [x] As a user, I would like to edit notes.
 - [ ] As a user, I would like to sort notes in a folder.
+- [ ] As a user, I would like to save my notes to a file.
+- [ ] As a user, I would like to load my notes from a file.
+- [ ] As a user, I would like to be reminded to save my notes to file when I quit the application.
+- [ ] As a user, I would like to be given the option to load my notes from a file.
