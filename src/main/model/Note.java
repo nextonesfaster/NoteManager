@@ -57,36 +57,34 @@ public class Note extends Lockable {
         return true;
     }
 
-    // Returns the character count of the note without including the title.
-    //
-    // The character count includes whitespaces and newlines.
+    // EFFECTS: returns the character count of the note without including the title;
+    //          the character count includes whitespaces and newlines.
     public int characterCount() {
         return this.countCharacters(this.text);
     }
 
-    // Returns the character count of the note including the title.
-    //
-    // The character count includes whitespaces and newlines.
+    // EFFECTS: returns the character count of the note including the title;
+    //          the character count includes whitespaces and newlines.
     public int characterCountWithTitle() {
         return this.countCharacters(this.text + this.title);
     }
 
-    // Returns the word count of the note without including the title.
+    // EFFECTS: returns the word count of the note without including the title.
     public int wordCount() {
         return this.countWords(this.text);
     }
 
-    // Returns the word count of the note including the title.
+    // EFFECTS: returns the word count of the note including the title.
     public int wordCountWithTitle() {
         return this.countWords(this.text + " " + this.title);
     }
 
-    // Returns the character count of the provided text
+    // EFFECTS: returns the character count of the provided text
     private int countCharacters(String text) {
         return text.length();
     }
 
-    // Returns the word count of the provided text
+    // EFFECTS: Returns the word count of the provided text
     private int countWords(String text) {
         StringTokenizer tokenizer = new StringTokenizer(text);
         return tokenizer.countTokens();
