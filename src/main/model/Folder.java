@@ -22,12 +22,6 @@ public class Folder extends Lockable implements Writable {
         this.notes = new SortableSet<>();
     }
 
-    // EFFECTS: creates a new folder with given name and notes
-    public Folder(String name, SortableSet<Note> notes) {
-        this.name = name;
-        this.notes = notes;
-    }
-
     // Adds a note to the folder
     // MODIFIES: this
     // EFFECTS: adds a note to the folder
