@@ -2,10 +2,14 @@ package ui;
 
 import model.Folder;
 import model.Folders;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 import utils.Lockable;
 import model.Note;
 
 import java.io.Console;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -14,19 +18,65 @@ public class NoteManager {
     private Scanner scanner = new Scanner(System.in);
     private Folder defaultFolder;
     private final Console console = System.console();
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
 
     // EFFECTS: creates a new NoteManager app and runs it
     public NoteManager() {
-        this.initDefaultFolder();
+        this.printInitialMessage();
+        if (this.initFolders(true)) {
+            System.out.println("Loaded notes from file!");
+        }
         this.runApp();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to load folders; otherwise initializes default
+    //          if initDefault is true; returns true if user asks to load
+    //          from file and is successful, false in all other cases
+    private boolean initFolders(boolean initDefault) {
+        System.out.println(
+                "Do you want to load notes from a file?"
+                + " Please enter the name of the file without extension"
+                + " if yes, otherwise please enter 0."
+        );
+        String input = this.scanner.nextLine();
+        if (!input.equals("0")) {
+            this.jsonReader = new JsonReader("data/" + input + ".json");
+            try {
+                if (this.readUsersData()) {
+                    return true;
+                }
+            } catch (IOException e) {
+                if (initDefault) {
+                    System.out.println("No file found, initializing default folder!");
+                }
+            }
+        }
+        if (initDefault) {
+            this.initDefaultFolder();
+        }
+        return false;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: reads user's data, setting folders and default folder and
+    //          returning true if there is at least one folder, otherwise
+    //          returns false
+    private boolean readUsersData() throws IOException {
+        Folders folders = this.jsonReader.read();
+        if (folders.getFolders().size() > 0) {
+            this.defaultFolder = folders.getFolders().get(0);
+            this.folders = folders;
+            return true;
+        }
+        return false;
     }
 
     // REQUIRES: default folder and scanner must be set
     // MODIFIES: this
     // EFFECTS: runs the NoteManager app
     private void runApp() {
-        this.printInitialMessage();
-
         while (true) {
             this.printMainMenuMessage();
             String input = this.getNextInput();
@@ -36,19 +86,36 @@ public class NoteManager {
                 continue;
             }
 
-            if (choice == 1 && !this.viewFolders()) {
+            if (handleMainMenuChoices(choice)) {
                 break;
-            } else if (choice == 2 && !this.createFolder()) {
-                break;
-            } else if (choice == 3 && !this.deleteFolder()) {
-                break;
-            } else if (choice == 4) {
-                System.out.println("Quitting!");
-                System.exit(0);
-            } else if (choice < 1 || choice > 4) {
-                System.out.println("Invalid response. Try again...");
             }
         }
+    }
+
+    // MODIFIES: this possibly in subsequent calls
+    // EFFECTS: handles user's response for main menu;
+    //          returns true to exit, false to continue looping
+    private boolean handleMainMenuChoices(int choice) {
+        if (choice == 1 && !this.viewFolders()) {
+            return true;
+        } else if (choice == 2 && !this.createFolder()) {
+            return true;
+        } else if (choice == 3 && !this.deleteFolder()) {
+            return true;
+        } else if (choice == 4) {
+            if (!this.initFolders(false)) {
+                System.out.println("Unable to read from file!");
+            } else {
+                System.out.println("Loaded notes from file!");
+            }
+        } else if (choice == 5) {
+            this.handleSaveToFile();
+        } else if (choice == 6) {
+            this.quit();
+        } else if (choice < 1 || choice > 6) {
+            System.out.println("Invalid response. Try again...");
+        }
+        return false;
     }
 
     // EFFECTS: prints the initial message on stdout
@@ -63,7 +130,9 @@ public class NoteManager {
                 + "[1] view folders\n"
                 + "[2] add folder\n"
                 + "[3] remove folder\n"
-                + "[4|quit] quit\n";
+                + "[4] load notes from file\n"
+                + "[5] save notes to file\n"
+                + "[6|quit] quit\n";
         System.out.println(message);
     }
 
@@ -158,8 +227,7 @@ public class NoteManager {
     private void checkQuit(String input) {
         String cleanInput = input.toLowerCase().trim();
         if (cleanInput.equals("quit") || cleanInput.equals("exit")) {
-            System.out.println("Quitting!");
-            System.exit(0);
+            this.quit();
         }
     }
 
@@ -500,6 +568,50 @@ public class NoteManager {
         note.removeLock();
         System.out.println("Removed lock from the note!");
         this.afterNoteEdit(note);
+    }
+
+    // EFFECTS: quits after asking user if they'd like to save the data
+    private void quit() {
+        System.out.println(
+                "Do you want to save the notes? If yes, please enter a file name."
+                + " Otherwise, please enter 0."
+        );
+        String input = this.scanner.nextLine();
+        if (!input.equals("0")) {
+            if (this.saveToFile(input)) {
+                System.out.println("Saved the notes to file `" + input + "`!");
+            } else {
+                System.out.println("Unable to save file!");
+            }
+        }
+        System.out.println("\nQuitting!");
+        System.exit(0);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves notes to a file; returning true if successful
+    private boolean saveToFile(String fileName) {
+        this.jsonWriter = new JsonWriter("data/" + fileName + ".json");
+        try {
+            this.jsonWriter.open();
+            this.jsonWriter.write(this.folders);
+            this.jsonWriter.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
+
+    // MODIFIES: this in subsequent call
+    // EFFECTS: asks user for file name to save notes to file
+    private void handleSaveToFile() {
+        System.out.println("Please enter the file name to save the notes to.");
+        String input = this.scanner.nextLine();
+        if (this.saveToFile(input)) {
+            System.out.println("Saved the notes to file `" + input + "`!");
+        } else {
+            System.out.println("Unable to save file!");
+        }
     }
 
     /**
