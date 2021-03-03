@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 import utils.SortableSet;
 
 // A container class for all folders.
-public class Folders {
+public class Folders implements Writable {
     private SortableSet<Folder> folders;
 
     // EFFECTS: creates an empty list of folders
@@ -36,6 +39,18 @@ public class Folders {
             stringBuilder.append("\n- [").append(i).append("] ").append(folder.getName());
         }
         return stringBuilder.toString();
+    }
+
+    // EFFECTS: returns a JSON representation of the folders
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (Folder folder : this.folders) {
+            jsonArray.put(folder.toJson());
+        }
+        json.put("folders", jsonArray);
+        return json;
     }
 
     /**

@@ -1,15 +1,17 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
 import utils.Lockable;
 
 import java.time.LocalDateTime;
 import java.util.StringTokenizer;
 
 // Represents a note.
-public class Note extends Lockable {
+public class Note extends Lockable implements Writable {
     private String title;
     private String text;
-    private final LocalDateTime dateTimeAdded = LocalDateTime.now();
+    private LocalDateTime dateTimeAdded = LocalDateTime.now();
     private LocalDateTime dateTimeModified = LocalDateTime.now();
     private Folder folder;
 
@@ -176,6 +178,23 @@ public class Note extends Lockable {
         this.folder.addNote(this);
     }
 
+    // EFFECTS: returns a JSON representation of the note;
+    //          it does NOT include the folder
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("text", this.text);
+        json.put("dateTimeAdded", this.dateTimeAdded);
+        json.put("dateTimeModified", this.dateTimeModified);
+
+        if (this.title != null) {
+            json.put("title", this.title);
+        }
+        this.addLockableToJson(json);
+
+        return json;
+    }
+
     /**
      * GETTERS AND SETTERS
      */
@@ -207,8 +226,11 @@ public class Note extends Lockable {
         this.text = text;
     }
 
+    public void setDateTimeAdded(LocalDateTime dateTimeAdded) {
+        this.dateTimeAdded = dateTimeAdded;
+    }
+
     public void setDateTimeModified(LocalDateTime dateTimeModified) {
         this.dateTimeModified = dateTimeModified;
     }
-
 }

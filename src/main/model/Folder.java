@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 import utils.Lockable;
 import utils.SortOption;
 import utils.SortableSet;
@@ -8,7 +11,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 // Represents a folder to contain notes.
-public class Folder extends Lockable {
+public class Folder extends Lockable implements Writable {
     private final String name;
     private SortableSet<Note> notes;
     private SortOption sortOption = SortOption.NEWEST_ADDED_FIRST;
@@ -17,6 +20,12 @@ public class Folder extends Lockable {
     public Folder(String name) {
         this.name = name;
         this.notes = new SortableSet<>();
+    }
+
+    // EFFECTS: creates a new folder with given name and notes
+    public Folder(String name, SortableSet<Note> notes) {
+        this.name = name;
+        this.notes = notes;
     }
 
     // Adds a note to the folder
@@ -87,6 +96,24 @@ public class Folder extends Lockable {
         }
 
         return stringBuilder.toString();
+    }
+
+    // EFFECTS: returns a JSON representation of the folder,
+    //          containing all the notes
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", this.name);
+
+        JSONArray jsonArray = new JSONArray();
+        for (Note note : this.notes) {
+            jsonArray.put(note.toJson());
+        }
+        json.put("notes", jsonArray);
+
+        this.addLockableToJson(json);
+
+        return json;
     }
 
     /**

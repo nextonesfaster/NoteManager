@@ -1,0 +1,51 @@
+{
+  "folders": [
+    {
+      "name": "Folder 1",
+      "notes": [
+        {
+          "title": "Note 1",
+          "text": "Sample Text",
+          "locked": false,
+          "dateTimeAdded": "2021-03-04T03:02:16.320",
+          "dateTimeModified": "2021-03-04T03:12:26.247"
+        },
+        {
+          "text": "Sample Text Two",
+          "locked": true,
+          "passwordHash": "$2a$10$hGb/uIigjUnpFXE4.ZuKhe8XRV5c96zpwTCKgRI3LqrIMRBaft8qa",
+          "dateTimeAdded": "2021-03-04T03:02:16.320",
+          "dateTimeModified": "2021-03-04T03:12:26.247"
+        }
+      ],
+      "locked": false
+    },
+    {
+      "name": "Folder 2",
+      "notes": [
+        {
+          "title": "Note 1",
+          "text": "Sample Text",
+          "locked": false,
+          "dateTimeAdded": "2021-03-04T03:02:16.320",
+          "dateTimeModified": "2021-03-04T03:12:26.247"
+        },
+        {
+          "title": "Note 2",
+          "text": "Sample Text Two",
+          "locked": true,
+          "passwordHash": "$2a$10$IqkSCoWC7TDdIpN40Ttvt.a2Eeh7rjWLqvoonur6e6Xt23P0eoSmu",
+          "dateTimeAdded": "2021-03-04T03:02:16.320",
+          "dateTimeModified": "2021-03-04T03:12:26.247"
+        }
+      ],
+      "locked": true,
+      "passwordHash": "$2a$10$m7I4sGMK.jyBpoDGmu5JcereKwcWW.EYHpy385GZP1HzQXeJdoiSK"
+    },
+    {
+      "name": "Folder 3",
+      "notes": [],
+      "locked": false
+    }
+  ]
+}

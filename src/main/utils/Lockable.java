@@ -1,13 +1,15 @@
 package utils;
 
+import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
+import persistence.Writable;
 
 // A class to model a lockable.
 //
 // Objects are NOT locked by default.
 public class Lockable {
     private boolean locked = false;
-    private String passwordHash;
+    private String passwordHash = null;
 
     // EFFECTS: locks the object if password is set
     public void lockIfPasswordSet() {
@@ -77,6 +79,15 @@ public class Lockable {
     // EFFECTS: returns true if the object has a lock; false otherwise
     public boolean hasLock() {
         return this.passwordHash != null;
+    }
+
+    // MODIFIES: jsonObject
+    // EFFECTS: adds JSON representation of the fields of this class to jsonObject
+    protected void addLockableToJson(JSONObject jsonObject) {
+        jsonObject.put("locked", this.locked);
+        if (this.passwordHash != null) {
+            jsonObject.put("passwordHash", this.passwordHash);
+        }
     }
 
     /**
