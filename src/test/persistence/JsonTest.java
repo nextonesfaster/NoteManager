@@ -10,21 +10,24 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTest {
-    void checkFolders(SortableSet<Folder> folders) {
-        Folder folderOne = new Folder("Folder 1");
-        this.addFolderNotes(folderOne);
-        Folder folderTwo = new Folder("Folder 2");
-        this.addFolderNotes(folderTwo);
-        folderTwo.getNotes().get(1).setTitle("Note 2");
-        folderTwo.lock("folder password");
-        Folder folderThree = new Folder("Folder 3");
+    Folder folderOne = new Folder("Folder 1");
+    Folder folderTwo = new Folder("Folder 2");
+    Folder folderThree = new Folder("Folder 3");
 
-        this.checkFolder(folders.get(0), folderOne);
-        this.checkFolder(folders.get(1), folderTwo);
-        this.checkFolder(folders.get(2), folderThree);
+    JsonTest() {
+        this.addFolderNotes(this.folderOne);
+        this.addFolderNotes(this.folderTwo);
+        this.folderTwo.getNotes().get(1).setTitle("Note 2");
+        this.folderTwo.lock("folder password");
     }
 
-    void addFolderNotes(Folder folder) {
+    void checkFolders(SortableSet<Folder> folders) {
+        this.checkFolder(folders.get(0), this.folderOne);
+        this.checkFolder(folders.get(1), this.folderTwo);
+        this.checkFolder(folders.get(2), this.folderThree);
+    }
+
+    private void addFolderNotes(Folder folder) {
         Note noteOne = new Note("Note 1", "Sample Text", folder);
         this.setNoteDateTime(noteOne);
         Note noteTwo = new Note("Sample Text Two", folder);

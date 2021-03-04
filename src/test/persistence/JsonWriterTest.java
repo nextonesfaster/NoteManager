@@ -1,6 +1,5 @@
 package persistence;
 
-import model.Folder;
 import model.Folders;
 import org.junit.jupiter.api.Test;
 
@@ -44,16 +43,9 @@ public class JsonWriterTest extends JsonTest {
     void testWriterNonEmptyFolders() {
         try {
             Folders folders = new Folders();
-            Folder folderOne = new Folder("Folder 1");
-            this.addFolderNotes(folderOne);
-            Folder folderTwo = new Folder("Folder 2");
-            this.addFolderNotes(folderTwo);
-            folderTwo.getNotes().get(1).setTitle("Note 2");
-            folderTwo.lock("folder password");
-            Folder folderThree = new Folder("Folder 3");
-            folders.add(folderOne);
-            folders.add(folderTwo);
-            folders.add(folderThree);
+            folders.add(this.folderOne);
+            folders.add(this.folderTwo);
+            folders.add(this.folderThree);
 
             JsonWriter writer = new JsonWriter("./data/testWriterNonEmptyFolders.json");
             writer.open();
