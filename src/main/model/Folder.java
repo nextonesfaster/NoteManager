@@ -110,6 +110,12 @@ public class Folder extends Lockable implements Writable {
         return json;
     }
 
+    // EFFECTS: converts the folder to a string
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     /**
      * GETTERS AND SETTERS
      */

@@ -193,4 +193,9 @@ public class FolderTest {
 
         assertEquals("Notes:\n- [1] one\n- [2] two", this.folder.displayNotes());
     }
+
+    @Test
+    public void testToString() {
+        assertEquals("cpsc210", this.folder.toString());
+    }
 }
