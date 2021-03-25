@@ -5,6 +5,7 @@ import ui.NoteManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 // This panel holds buttons to add and delete notes and edit password
 public class NoteActionsPanel extends JPanel {
@@ -69,18 +70,20 @@ public class NoteActionsPanel extends JPanel {
         }
         if (note.isLocked()) {
             JPasswordField pwd = new JPasswordField();
-            if (this.noteManager.getPassword("Enter Current Password", pwd)) {
+            Optional<String> password = this.noteManager.getPassword("Enter Current Password", pwd);
+            if (!password.isPresent()) {
                 return;
             }
-            if (!note.unlock(new String(pwd.getPassword()))) {
+            if (!note.unlock(password.get())) {
                 JOptionPane.showMessageDialog(this.noteManager, "Incorrect password!");
                 return;
             }
         }
         JPasswordField pwd = new JPasswordField();
-        if (this.noteManager.getPassword("Enter New Password", pwd)) {
+        Optional<String> password = this.noteManager.getPassword("Enter new Password", pwd);
+        if (!password.isPresent()) {
             return;
         }
-        note.lock(new String(pwd.getPassword()));
+        note.lock(password.get());
     }
 }

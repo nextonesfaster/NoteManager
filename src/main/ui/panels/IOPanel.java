@@ -28,6 +28,8 @@ public class IOPanel extends JPanel {
         saveButton.addActionListener(e -> {
             if (!this.noteManager.promptToSaveToFile()) {
                 JOptionPane.showMessageDialog(this, "There was an error while saving the notes.");
+            } else {
+                this.noteManager.beep();
             }
         });
         this.add(saveButton);
@@ -41,6 +43,7 @@ public class IOPanel extends JPanel {
             if (noteManager.promptToLoadFromFile()) {
                 noteManager.refreshNotePanels();
                 noteManager.refreshFolderActions(0);
+                this.noteManager.beep();
             }
         });
         this.add(loadButton);

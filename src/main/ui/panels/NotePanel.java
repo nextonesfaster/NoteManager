@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Optional;
 
 // This panel displays note.
 public class NotePanel extends JPanel {
@@ -162,10 +163,11 @@ public class NotePanel extends JPanel {
     // EFFECTS: prompts user to unlock the note
     private boolean tryUnlockNote(Note note) {
         JPasswordField pwd = new JPasswordField();
-        if (!this.noteManager.getPassword("Enter Password", pwd)) {
+        Optional<String> password = this.noteManager.getPassword("Enter Password", pwd);
+        if (!password.isPresent()) {
             return false;
         }
-        if (!note.unlock(new String(pwd.getPassword()))) {
+        if (!note.unlock(password.get())) {
             JOptionPane.showMessageDialog(this.noteManager, "Incorrect password!");
             return false;
         }
@@ -173,12 +175,13 @@ public class NotePanel extends JPanel {
     }
 
     // MODIFIES: this
-    // EFFECTS: updates selected note based on the changes
+    // EFFECTS: updates selected note based on the changes and plays a beep
     private void updateNote() {
         if (!this.noteTitleField.getText().equals(DEFAULT_TITLE) && !this.noteTitleField.getText().isEmpty()) {
             this.noteManager.getSelectedNote().editTitle(noteTitleField.getText());
         }
         this.noteManager.getSelectedNote().edit(noteDisplayArea.getText());
+        this.noteManager.beep();
     }
 
     // EFFECTS: returns a key handler that saves notes when ctrl/cmd+s is pressed

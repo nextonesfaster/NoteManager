@@ -13,10 +13,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Optional;
 
 // GUI-based Note Manager application.
 public class NoteManager extends JFrame {
     public static final int HEIGHT = 500;
+    private static final Toolkit DEFAULT_TOOLKIT = Toolkit.getDefaultToolkit();
     private final SidePanel sidePanel;
     private final NotePanel notePanel;
     private final FolderActionsPanel folderActionsPanel;
@@ -166,7 +168,9 @@ public class NoteManager extends JFrame {
     //          returns true and updates folders if successful;
     //          false otherwise
     public boolean promptToLoadFromFile() {
-        String fileName = JOptionPane.showInputDialog("Enter name of the file to load from");
+        String fileName = JOptionPane.showInputDialog(
+                "Enter name of the file to load from (press cancel to not load from file)"
+        );
         if (fileName != null) {
             if (this.loadFromFile(fileName)) {
                 return true;
@@ -183,7 +187,9 @@ public class NoteManager extends JFrame {
     //          returns true and locks all lockable folders and notes
     //          if successful; false otherwise
     public boolean promptToSaveToFile() {
-        String fileName = JOptionPane.showInputDialog("Enter name of the file to save to");
+        String fileName = JOptionPane.showInputDialog(
+                "Enter name of the file to save to (press cancel to not save to file)"
+        );
         if (fileName != null && !fileName.isEmpty()) {
             this.lock();
             return this.saveToFile(fileName);
@@ -192,11 +198,20 @@ public class NoteManager extends JFrame {
     }
 
     // MODIFIES: passwordField
-    // EFFECTS: prompts user to enter password; returns true if user does not
-    //          cancel or enter empty password, false otherwise
-    public boolean getPassword(String title, JPasswordField passwordField) {
+    // EFFECTS: prompts user to enter password; returns entered password if user
+    //          does not cancel or enter empty password, returns empty otherwise
+    public Optional<String> getPassword(String title, JPasswordField passwordField) {
         int action = JOptionPane.showConfirmDialog(this, passwordField, title, JOptionPane.OK_CANCEL_OPTION);
-        return action == JOptionPane.OK_OPTION && passwordField.getPassword().length != 0;
+        if (action == JOptionPane.OK_OPTION && passwordField.getPassword().length != 0) {
+            return Optional.of(new String(passwordField.getPassword()));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    // EFFECTS: plays a beep sound
+    public void beep() {
+        DEFAULT_TOOLKIT.beep();
     }
 
     /**
