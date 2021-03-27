@@ -80,7 +80,7 @@ public class NoteActionsPanel extends JPanel {
             }
         }
         JPasswordField pwd = new JPasswordField();
-        Optional<String> password = this.noteManager.getPassword("Enter new Password", pwd);
+        Optional<String> password = this.noteManager.getPassword("Enter New Password", pwd);
         if (!password.isPresent()) {
             return;
         }
