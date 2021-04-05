@@ -1,5 +1,7 @@
 package model;
 
+import model.exceptions.LockedException;
+import model.exceptions.TitleNotSetException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,8 +70,23 @@ class NoteTest {
     }
 
     @Test
-    public void testSearchInTitle() {
-        assertTrue(this.note.searchInTitle("ti"));
+    public void testSearchInTitleNoException() {
+        try {
+            assertTrue(this.note.searchInTitle("ti"));
+        } catch (TitleNotSetException e) {
+            fail("unexpected `TitleNotSetException`");
+        }
+    }
+
+    @Test
+    public void testSearchInTitleTitleNotSetException() {
+        this.note.setTitle(null);
+        try {
+            assertTrue(this.note.searchInTitle("ti"));
+            fail("expected `TitleNotSetException`");
+        } catch (TitleNotSetException e) {
+            // expected
+        }
     }
 
     @Test
@@ -134,15 +151,48 @@ class NoteTest {
     }
 
     @Test
-    public void testDisplayWithTitle() {
+    public void testDisplayWithTitleNoException() {
         String msg = "Title: title\n\nThis is just a simple note.\nHas a newline.\n\nWords: 9";
-        assertEquals(msg, this.note.display());
+        try {
+            assertEquals(msg, this.note.display());
+        } catch (LockedException e) {
+            fail("unexpected `LockedException`");
+        }
     }
 
     @Test
-    public void testDisplayWithoutTitle() {
+    public void testDisplayWithTitleLockedException() {
+        String msg = "Title: title\n\nThis is just a simple note.\nHas a newline.\n\nWords: 9";
+        this.note.lock("password");
+        try {
+            assertEquals(msg, this.note.display());
+            fail("expected `LockedException`");
+        } catch (LockedException e) {
+            // expected
+        }
+    }
+
+    @Test
+    public void testDisplayWithoutTitleNoException() {
         Note note = new Note("Just some text.");
         String msg = "Just some text.\n\nWords: 3";
-        assertEquals(msg, note.display());
+        try {
+            assertEquals(msg, note.display());
+        } catch (LockedException e) {
+            fail("unexpected `LockedException`");
+        }
+    }
+
+    @Test
+    public void testDisplayWithoutTitleLockedException() {
+        Note note = new Note("Just some text.");
+        note.lock("password");
+        String msg = "Just some text.\n\nWords: 3";
+        try {
+            assertEquals(msg, note.display());
+            fail("expected `LockedException`");
+        } catch (LockedException e) {
+            // expected
+        }
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import model.exceptions.LockedException;
+import model.exceptions.TitleNotSetException;
 import org.json.JSONObject;
 import persistence.Writable;
 import utils.Lockable;
@@ -112,9 +114,13 @@ public class Note extends Lockable implements Writable {
     // EFFECTS: returns true if the given text is found in the note title or text;
     //          false otherwise
     public boolean search(String text) {
-        if (this.title != null && this.searchInTitle(text)) {
-            return true;
-        } else {
+        try {
+            if (this.searchInTitle(text)) {
+                return true;
+            } else {
+                return this.searchInText(text);
+            }
+        } catch (TitleNotSetException e) {
             return this.searchInText(text);
         }
     }
@@ -127,10 +133,15 @@ public class Note extends Lockable implements Writable {
     }
 
     // Searches for given text in the note's title
-    // REQUIRES: title is set
-    // EFFECTS: returns true if the given text is found in the note title;
-    //          false otherwise
-    public boolean searchInTitle(String text) {
+    // EFFECTS: IF title is NOT set
+    //              throws TitleNotSetException
+    //          OTHERWISE
+    //              returns true if the given text is found in the note title;
+    //              false otherwise
+    public boolean searchInTitle(String text) throws TitleNotSetException {
+        if (this.title == null) {
+            throw new TitleNotSetException("Note title not set");
+        }
         return this.searchText(this.title, text);
     }
 
@@ -157,9 +168,15 @@ public class Note extends Lockable implements Writable {
         }
     }
 
-    // REQUIRES: note is unlocked
-    // EFFECTS: returns a well-formatted display of the note
-    public String display() {
+    // EFFECTS: IF note is locked
+    //              throws LockedException
+    //          OTHERWISE
+    //              returns a well-formatted display of the note
+    public String display() throws LockedException {
+        if (this.isLocked()) {
+            throw new LockedException("Note is locked!");
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
 
         if (this.title != null) {

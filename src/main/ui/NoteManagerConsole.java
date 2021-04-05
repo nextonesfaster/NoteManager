@@ -2,6 +2,7 @@ package ui;
 
 import model.Folder;
 import model.Folders;
+import model.exceptions.LockedException;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import utils.Lockable;
@@ -328,11 +329,21 @@ public class NoteManagerConsole {
     //          returns true if user wants to exit to main menu, false otherwise
     private boolean displayNote(Note note) {
         if (!note.isLocked()) {
-            System.out.println("\n" + note.display() + "\n");
+            try {
+                System.out.println("\n" + note.display() + "\n");
+            } catch (LockedException e) {
+                // note should be unlocked at this point
+                e.printStackTrace();
+            }
         } else {
             System.out.println("Note is locked! Enter password to view it: ");
             if (tryUnlockLockable(note, 3)) {
-                System.out.println(note.display() + "\n");
+                try {
+                    System.out.println(note.display() + "\n");
+                } catch (LockedException e) {
+                    // note should be unlocked at this point
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -516,7 +527,12 @@ public class NoteManagerConsole {
     }
 
     private void afterNoteEdit(Note note) {
-        System.out.println("\n" + note.display());
+        try {
+            System.out.println("\n" + note.display());
+        } catch (LockedException e) {
+            // note should be unlocked at this point
+            e.printStackTrace();
+        }
         this.displayNoteMenuOptions();
     }
 
