@@ -26,7 +26,7 @@ The application is made using Java and therefore runs on all platforms that supp
 - [x] As a user, I would like to load my notes from a file.
 - [x] As a user, I would like to be reminded to save my notes to file when I quit the application.
 - [x] As a user, I would like to be given the option to load my notes from a file on start-up.
-- [ ] As a user, I would like to hear sound when I perform certain actions.
+- [x] As a user, I would like to hear sound when I perform certain actions.
 
 ## Phase 4: Task 2
 
