@@ -7,10 +7,12 @@ import persistence.JsonWriter;
 import ui.panels.*;
 import model.Note;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class NoteManager extends JFrame {
     private Folder selectedFolder;
     private Note selectedNote;
     private JsonReader jsonReader;
+    private final File audioFile = new File("data/beep.wav");
 
     // EFFECTS: creates a new NoteManager app and runs it
     public NoteManager() {
@@ -211,7 +214,13 @@ public class NoteManager extends JFrame {
 
     // EFFECTS: plays a beep sound
     public void beep() {
-        DEFAULT_TOOLKIT.beep();
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(this.audioFile));
+            clip.start();
+        } catch (Exception e) {
+            DEFAULT_TOOLKIT.beep();
+        }
     }
 
     /**
