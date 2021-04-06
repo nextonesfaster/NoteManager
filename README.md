@@ -35,3 +35,9 @@ I chose to implement the first option:
 > Test and design a class in your model package that is robust. You must have at least one method that throws a checked exception. You must have one test for the case where the exception is expected and another where the exception is not expected.
 
 The `Note` class has a robust design, and the `searchInTitle` and `display` methods throw checked exceptions.
+
+## Phase 4: Task 3
+
+If I had more time, I'd refactor:
+
+- the `Folders` class to be an `Iterator`. Calling the `getFolders()` method on an instance of `Folders` class feels odd.
