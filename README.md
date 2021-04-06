@@ -26,4 +26,12 @@ The application is made using Java and therefore runs on all platforms that supp
 - [x] As a user, I would like to load my notes from a file.
 - [x] As a user, I would like to be reminded to save my notes to file when I quit the application.
 - [x] As a user, I would like to be given the option to load my notes from a file on start-up.
-- [ ] As a user, I would like to hear sound when I perform certain actions.  
+- [ ] As a user, I would like to hear sound when I perform certain actions.
+
+## Phase 4: Task 2
+
+I chose to implement the first option:
+
+> Test and design a class in your model package that is robust. You must have at least one method that throws a checked exception. You must have one test for the case where the exception is expected and another where the exception is not expected.
+
+The `Note` class has a robust design, and the `searchInTitle` and `display` methods throw checked exceptions.
