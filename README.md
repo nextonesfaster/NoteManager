@@ -1,6 +1,6 @@
 # Note Manager
 
-Note manager is an application to take organised notes quickly and efficiently. Notes are organised in different folders and can be sorted by date added, date modified, or alphabetically. Notes can also be protected by a password.
+Note Manager is an application to take organized notes quickly and efficiently. Notes are organised in different folders and can be sorted by date added, date modified, or alphabetically. Notes can also be protected by a password.
 
 Students and professionals alike take notes for various reasons. This application will be useful for most people.
 
