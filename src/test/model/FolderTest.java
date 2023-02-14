@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import utils.SortOption;
 import utils.SortableSet;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,19 +14,19 @@ public class FolderTest {
 
     @BeforeEach
     public void setUp() {
-        this.folder = new Folder("cpsc210");
+        this.folder = new Folder("folder-name");
     }
 
     @Test
     public void testGetNote() {
-        assertEquals("cpsc210", this.folder.getName());
+        assertEquals("folder-name", this.folder.getName());
     }
 
     @Test
     public void testAddNote() {
         assertEquals(0, this.folder.totalNotes());
 
-        Note note = new Note("cpsc210 abstraction 1");
+        Note note = new Note("abstraction 1");
         this.folder.addNote(note);
         assertEquals(1, this.folder.totalNotes());
         assertEquals(note, this.folder.getNotes().get(0));
@@ -35,7 +34,7 @@ public class FolderTest {
 
     @Test
     public void testRemoveNotePresent() {
-        Note note = new Note("cpsc210 abstraction 1");
+        Note note = new Note("abstraction 1");
         this.folder.addNote(note);
 
         assertEquals(1, this.folder.totalNotes());
@@ -47,7 +46,7 @@ public class FolderTest {
 
     @Test
     public void testRemoveNoteNotPresent() {
-        Note note = new Note("cpsc210 abstraction 1");
+        Note note = new Note("abstraction 1");
         assertFalse(this.folder.removeNote(note));
     }
 
@@ -67,7 +66,7 @@ public class FolderTest {
     @Test
     public void testSearchFound() {
         new Note("the quick brown fox", this.folder);
-        new Note("title","jumps over the lazy dog", "password", this.folder);
+        new Note("title", "jumps over the lazy dog", "password", this.folder);
         Note note = new Note("jumps over the lazy dog", this.folder);
 
         Optional<Note> result = this.folder.search("over the lazy");
@@ -196,6 +195,6 @@ public class FolderTest {
 
     @Test
     public void testToString() {
-        assertEquals("cpsc210", this.folder.toString());
+        assertEquals("folder-name", this.folder.toString());
     }
 }

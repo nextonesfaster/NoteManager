@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 // This class is modelled after the `JsonWriterTest` class present here:
-// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo/blob/master/src/test/persistence/JsonWriterTest.java
 public class JsonWriterTest extends JsonTest {
     @Test
     public void testWriterInvalidFile() {

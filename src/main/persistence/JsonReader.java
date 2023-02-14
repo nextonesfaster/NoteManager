@@ -15,9 +15,6 @@ import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 // Represents a reader that reads workroom from JSON data stored in file
-//
-// This class is modelled after the JsonReader class present here:
-// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo/blob/master/src/main/persistence/JsonReader.java
 public class JsonReader {
     private String source;
 
@@ -94,7 +91,8 @@ public class JsonReader {
     }
 
     // MODIFIES: this
-    // EFFECTS: parses lockable details from JSON object and sets the appropriate fields
+    // EFFECTS: parses lockable details from JSON object and sets the appropriate
+    // fields
     private void setLockableFields(Lockable lockable, JSONObject jsonObject) {
         lockable.setLocked(jsonObject.getBoolean("locked"));
 

@@ -2,7 +2,6 @@ package utils;
 
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
-import persistence.Writable;
 
 // A class to model a lockable.
 //
@@ -38,7 +37,7 @@ public class Lockable {
     // Checks if the provided password is the correct password
     // REQUIRES: password is set
     // EFFECTS: returns true if the provided password is the
-    //          password set for this object, false otherwise
+    // password set for this object, false otherwise
     public boolean isCorrectPassword(String password) {
         return BCrypt.checkpw(password, this.getPasswordHash());
     }
@@ -59,7 +58,7 @@ public class Lockable {
     // Unlocks the object if the password is correct
     // MODIFIES: this
     // EFFECTS: returns true and unlocks the object if the password is correct;
-    //          returns false otherwise
+    // returns false otherwise
     public boolean unlock(String password) {
         if (this.isCorrectPassword(password)) {
             this.setLocked(false);
